@@ -27,7 +27,7 @@ function addTask() {
   };
   allTasks.push(task);
   taskInput.value = '';
-  renderTasks(currentFilter);
+  searchtask(currentFilter);
   setReminder(task);
   saveTasks();
 }
@@ -60,7 +60,7 @@ function getFilteredTasks(filter, searchText) {
   });
 }
 
-function renderTasks(filter = 'all') {
+function searchtask(filter = 'all') {
   currentFilter = filter;
   const taskList = document.getElementById('taskList');
   taskList.innerHTML = '';
@@ -85,7 +85,7 @@ function renderTasks(filter = 'all') {
     checkBtn.innerHTML = '✅';
     checkBtn.onclick = () => {
       task.completed = !task.completed;
-      renderTasks(currentFilter);
+      searchtask(currentFilter);
       saveTasks();
     };
 
@@ -94,7 +94,7 @@ function renderTasks(filter = 'all') {
     delBtn.innerHTML = '🗑️';
     delBtn.onclick = () => {
       task.trashed = true;
-      renderTasks(currentFilter);
+      searchtask(currentFilter);
       saveTasks();
     };
 
@@ -105,13 +105,8 @@ function renderTasks(filter = 'all') {
     taskList.appendChild(taskCard);
   });
 }
-
-document.getElementById("taskInput").addEventListener("keypress", function (e) {
-  if (e.key === "Enter") addTask();
-});
-
 function filterTasks(category) {
-  renderTasks(category);
+  searchtask(category);
 }
 
 function loadAdminData() {
@@ -135,6 +130,6 @@ function clearAllData() {
 }
 
 window.onload = () => {
-  renderTasks();
+  searchtask();
   loadAdminData();
 };

@@ -22,12 +22,13 @@ body {
   background-color: #18273a;
   padding-top: 20px;
   z-index: 1050;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  transform: none;
 }
+
 .sidebar.active {
   transform: translateX(0);
 }
+
 .sidebar a {
   color: #e0f7fa;
   display: block;

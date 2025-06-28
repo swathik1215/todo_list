@@ -11,12 +11,11 @@
 <body>
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
-      <button class="btn text-light me-2" onclick="toggleSidebar()">☰</button>
       <a class="navbar-brand" href="#">Macha To-Do</a>
     </div>
   </nav>
   <div class="sidebar" id="sidebar">
-    <input id="searchInput" class="form-control mb-3" placeholder="Search tasks..." oninput="renderTasks(currentFilter)"/>
+    <input id="searchInput" class="form-control mb-3" placeholder="Search tasks..." oninput="searchtask(currentFilter)"/>
     <a onclick="filterTasks('all')"> &#128203; All Tasks</a>
     <a onclick="filterTasks('completed')"> &#9989; Completed</a>
     <a onclick="filterTasks('trashed')"> &#128465;&#65039; Trash</a>
