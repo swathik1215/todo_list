@@ -27,57 +27,37 @@ function addTask() {
   };
   allTasks.push(task);
   taskInput.value = '';
-  searchtask(currentFilter);
+  filterTasks(currentFilter);
   setReminder(task);
   saveTasks();
 }
 
-function filterAll(task) {
-  return !task.trashed;
-}
-
-function filterCompleted(task) {
-  return task.completed && !task.trashed;
-}
-
-function filterTrashed(task) {
-  return task.trashed;
-}
-
-function filterRemainders(task) {
-  return !task.completed && !task.trashed;
-}
-
-function getFilteredTasks(filter, searchText) {
-  return allTasks.filter(task => {
-    let matchFilter = false;
-    if (filter === 'all') matchFilter = filterAll(task);
-    else if (filter === 'completed') matchFilter = filterCompleted(task);
-    else if (filter === 'trashed') matchFilter = filterTrashed(task);
-    else if (filter === 'remainders') matchFilter = filterRemainders(task);
-    const matchSearch = task.text.toLowerCase().includes(searchText);
-    return matchFilter && matchSearch;
-  });
-}
-
-function searchtask(filter = 'all') {
-  currentFilter = filter;
+function filterTasks(category) {
+  currentFilter = category;
   const taskList = document.getElementById('taskList');
   taskList.innerHTML = '';
-  const searchText = document.getElementById('searchInput')?.value?.toLowerCase() || '';
-  const filteredTasks = getFilteredTasks(filter, searchText);
-
+  let filteredTasks = [];
+  if (category === 'all') {
+    filteredTasks = allTasks.filter(task => !task.trashed);
+  } else if (category === 'completed') {
+    filteredTasks = allTasks.filter(task => task.completed && !task.trashed);
+  } else if (category === 'trashed') {
+    filteredTasks = allTasks.filter(task => task.trashed);
+  } else if (category === 'remainders') {
+    filteredTasks = allTasks.filter(task => !task.completed && !task.trashed);
+  }
   filteredTasks.forEach(task => {
     const taskCard = document.createElement('div');
     taskCard.className = 'task-card';
     if (task.completed) taskCard.classList.add('completed');
     if (task.trashed) taskCard.classList.add('trashed');
-
     const taskTextElement = document.createElement('span');
-    taskTextElement.innerHTML = `
-      <span class="priority-label priority-${task.priority}">${task.priority}</span>
-      ${task.text}
-    `;
+    const prioritySpan = document.createElement('span');
+    prioritySpan.className = `priority-label priority-${task.priority}`;
+    prioritySpan.textContent = task.priority;
+    const taskText = document.createTextNode(` ${task.text}`);
+    taskTextElement.appendChild(prioritySpan);
+    taskTextElement.appendChild(taskText);
 
     const buttonGroup = document.createElement('div');
     const checkBtn = document.createElement('button');
@@ -85,7 +65,7 @@ function searchtask(filter = 'all') {
     checkBtn.innerHTML = '✅';
     checkBtn.onclick = () => {
       task.completed = !task.completed;
-      searchtask(currentFilter);
+      filterTasks(currentFilter);
       saveTasks();
     };
 
@@ -94,17 +74,14 @@ function searchtask(filter = 'all') {
     delBtn.innerHTML = '🗑️';
     delBtn.onclick = () => {
       task.trashed = true;
-      searchtask(currentFilter);
+      filterTasks(currentFilter);
       saveTasks();
     };
-
+    
     buttonGroup.appendChild(checkBtn);
     buttonGroup.appendChild(delBtn);
     taskCard.appendChild(taskTextElement);
     taskCard.appendChild(buttonGroup);
     taskList.appendChild(taskCard);
   });
-}
-function filterTasks(category) {
-  searchtask(category);
 }
