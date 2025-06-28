@@ -108,28 +108,3 @@ function searchtask(filter = 'all') {
 function filterTasks(category) {
   searchtask(category);
 }
-
-function loadAdminData() {
-  const tasks = JSON.parse(localStorage.getItem("allTasks")) || [];
-  const total = tasks.length;
-  const completed = tasks.filter(t => t.completed).length;
-  const trashed = tasks.filter(t => t.trashed).length;
-  const high = tasks.filter(t => t.priority === 'high').length;
-  document.getElementById("totalTasks").innerText = total;
-  document.getElementById("completedTasks").innerText = completed;
-  document.getElementById("trashedTasks").innerText = trashed;
-  document.getElementById("highPriority").innerText = high;
-}
-
-function clearAllData() {
-  if (confirm("Are you sure you want to delete all tasks?")) {
-    localStorage.removeItem("allTasks");
-    loadAdminData();
-    alert("All data cleared!");
-  }
-}
-
-window.onload = () => {
-  searchtask();
-  loadAdminData();
-};
